@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Конвертер цветов ITD PB</title>
+<meta name="description" content="Преобразование изображений в палитру Wplace">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="stylesheet" href="colors.css">
+<link rel="stylesheet" href="main.css">
+</head>
+<body>
+<div id="global-toast"></div>
+
+<!-- Main Content -->
+<main class="container main-container">
+  
+  <!-- Upload Section -->
+  <section class="panel panel-upload">
+    <div class="card">
+      <div class="upload-wrapper">
+        <input type="file" id="upload" accept="image/*">
+        <label for="upload" class="upload-box">
+          <div class="upload-icon">📤</div>
+          <div class="upload-text">
+            <strong>Загрузить изображение</strong>
+            <span>Кликните, вставьте или перетащите</span>
+          </div>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Grid: Settings + Canvas -->
+  <section class="panel panel-main">
+    
+    <!-- Left: Settings -->
+    <div class="card settings-card">
+      <div class="scroll-bar">
+        <label for="scaleRange">Масштаб</label>
+        <input type="range" id="scaleRange" min="0.001" max="5" step="any" value="1">
+        <span id="scaleValue">1.00x</span>
+      </div>
+
+      <div class="dimensions">
+        <div class="dimension-input">
+          <label for="widthInput">Ширина</label>
+          <input type="number" id="widthInput">
+        </div>
+        <div class="dimension-input">
+          <label for="heightInput">Высота</label>
+          <input type="number" id="heightInput">
+        </div>
+        <div class="dimension-input">
+          <label>Площадь</label>
+          <input type="number" id="area" readonly>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:center; margin: 20px 0 10px 0;">
+        <button id="ditherButton" class="btn btn-toggle active">
+          Дизеринг (рекомендуется)
+        </button> 
+      </div>
+
+      <!-- Advanced options -->
+      <details id="adv-options" class="adv-card">
+        <summary>
+          <span>Дополнительные опции</span>
+        </summary>
+        <div class="adv-content">
+          <button id="transparentButton" class="btn btn-toggle" type="button">
+            Скрыть полупрозрачные пиксели
+          </button>
+          <button id="opt-toggle-hide-ui" class="btn btn-toggle" type="button">
+            Показать элементы управления скрытием цветов (глазики)
+          </button>
+        </div>
+      </details>
+    </div>
+
+    <!-- Right: Canvas -->
+    <div class="canvas-wrap card">
+      <div class="canvas-viewport" id="canvasViewport">
+        <canvas id="canvas"></canvas>
+      </div>
+
+      <div class="scroll-bar">
+        <label for="zoomRange">Масштабирование</label>
+        <input type="range" id="zoomRange" min="0.01" max="5" step="0.01" value="1">
+        <span id="zoomValue">1.00x</span>
+      </div>
+      
+      <div>
+        <small style="display:block; color:#888; font-size:0.85em;">
+          Ctrl + Колесо мыши для масштабирования
+        </small>
+      </div>
+
+      <div class="actions">
+        <a id="download" class="btn" href="#">Скачать</a>
+        <button id="clipboard" class="btn">Копировать</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Color Selection (Only Free Colors) -->
+  <section class="panel panel-colors">
+    <div class="card">
+      <div class="colors-card-head">
+        <p class="section-title">Все цвета</p>
+        <button id="hide-toggle-free" class="btn-eye" title="Скрыть все цвета"></button>
+      </div>
+
+      <button class="btn" data-type="free" id="unselect-all-free">
+        Отменить выбор всех цветов
+      </button>
+
+      <!-- Color chips -->
+      <div id="colors-free" class="chips">
+        <button id="1" class="toggle-color active" data-type=free style="background: rgb(222,250,206);" title="Прозрачный: rgb(222, 250, 206)">Прозрачный</button>
+        <button id="2" class="toggle-color active" data-type=free style="background: rgb(255,255,255);" title="Белый: rgb(255, 255, 255)">Белый</button>
+        <button id="3" class="toggle-color active" data-type=free style="background: rgb(228,228,228);" title="Светло-серый: rgb(228, 228, 228)">Светло-серый</button>
+        <button id="4" class="toggle-color active" data-type=free style="background: rgb(136,136,136); color: #fff;" title="Серый: rgb(136, 136, 136)">Серый</button>
+        <button id="5" class="toggle-color active" data-type=free style="background: rgb(34,34,34); color: #fff;" title="Темно-серый: rgb(34, 34, 34)">Темно-серый</button>
+        <button id="6" class="toggle-color active" data-type=free style="background: rgb(0,0,0); color: #fff;" title="Черный: rgb(0, 0, 0)">Черный</button>
+        <button id="7" class="toggle-color active" data-type=free style="background: rgb(90,48,29); color: #fff;" title="Коричневый: rgb(90, 48, 29)">Коричневый</button>
+        <button id="8" class="toggle-color active" data-type=free style="background: rgb(160,106,66); color: #fff;" title="Светло-коричневый: rgb(160, 106, 66)">Светло-коричневый</button>
+        <button id="9" class="toggle-color active" data-type=free style="background: rgb(255,196,140);" title="Молочный / Персик: rgb(255, 196, 140)">Молочный / Персик</button>
+        <button id="10" class="toggle-color active" data-type=free style="background: rgb(109,0,26); color: #fff;" title="Бордовый: rgb(109, 0, 26)">Бордовый</button>
+        <button id="11" class="toggle-color active" data-type=free style="background: rgb(190,0,57); color: #fff;" title="Малиновый: rgb(190, 0, 57)">Малиновый</button>
+        <button id="12" class="toggle-color active" data-type=free style="background: rgb(229,0,0); color: #fff;" title="Красный: rgb(229, 0, 0)">Красный</button>
+        <button id="13" class="toggle-color active" data-type=free style="background: rgb(255,56,129);" title="Светло-малиновый: rgb(255, 56, 129)">Светло-малиновый</button>
+        <button id="14" class="toggle-color active" data-type=free style="background: rgb(255,167,209);" title="Розовый: rgb(255, 167, 209)">Розовый</button>
+        <button id="15" class="toggle-color active" data-type=free style="background: rgb(222,16,127); color: #fff;" title="Ярко-розовый: rgb(222, 16, 127)">Ярко-розовый</button>
+        <button id="16" class="toggle-color active" data-type=free style="background: rgb(229,149,0); color: #fff;" title="Оранжевый: rgb(229, 149, 0)">Оранжевый</button>
+        <button id="17" class="toggle-color active" data-type=free style="background: rgb(255,168,0);" title="Ярко-оранжевый / Янтарь: rgb(255, 168, 0)">Ярко-оранжевый / Янтарь</button>
+        <button id="18" class="toggle-color active" data-type=free style="background: rgb(229,217,0);" title="Желтый: rgb(229, 217, 0)">Желтый</button>
+        <button id="19" class="toggle-color active" data-type=free style="background: rgb(255,248,184);" title="Светло-желтый / Кремовый: rgb(255, 248, 184)">Светло-желтый / Кремовый</button>
+        <button id="20" class="toggle-color active" data-type=free style="background: rgb(0,95,57); color: #fff;" title="Темно-зеленый: rgb(0, 95, 57)">Темно-зеленый</button>
+        <button id="21" class="toggle-color active" data-type=free style="background: rgb(2,190,1); color: #fff;" title="Зеленый: rgb(2, 190, 1)">Зеленый</button>
+        <button id="22" class="toggle-color active" data-type=free style="background: rgb(148,224,68);" title="Лайм / Светло-зеленый: rgb(148, 224, 68)">Лайм / Светло-зеленый</button>
+        <button id="23" class="toggle-color active" data-type=free style="background: rgb(0,117,111); color: #fff;" title="Сине-зеленый / Темная бирюза: rgb(0, 117, 111)">Сине-зеленый / Темная бирюза</button>
+        <button id="24" class="toggle-color active" data-type=free style="background: rgb(0,0,234); color: #fff;" title="Синий: rgb(0, 0, 234)">Синий</button>
+        <button id="25" class="toggle-color active" data-type=free style="background: rgb(0,131,199); color: #fff;" title="Средне-синий: rgb(0, 131, 199)">Средне-синий</button>
+        <button id="26" class="toggle-color active" data-type=free style="background: rgb(54,144,234);" title="Ярко-синий / Небо: rgb(54, 144, 234)">Ярко-синий / Небо</button>
+        <button id="27" class="toggle-color active" data-type=free style="background: rgb(0,211,221);" title="Голубой: rgb(0, 211, 221)">Голубой</button>
+        <button id="28" class="toggle-color active" data-type=free style="background: rgb(81,233,244);" title="Светло-голубой / Бирюза: rgb(81, 233, 244)">Светло-голубой / Бирюза</button>
+        <button id="29" class="toggle-color active" data-type=free style="background: rgb(73,58,193); color: #fff;" title="Индиго: rgb(73, 58, 193)">Индиго</button>
+        <button id="30" class="toggle-color active" data-type=free style="background: rgb(106,92,255);" title="Сине-фиолетовый: rgb(106, 92, 255)">Сине-фиолетовый</button>
+        <button id="31" class="toggle-color active" data-type=free style="background: rgb(180,74,192); color: #fff;" title="Фиолетовый: rgb(180, 74, 192)">Фиолетовый</button>
+        <button id="32" class="toggle-color active" data-type=free style="background: rgb(129,30,159); color: #fff;" title="Темно-фиолетовый: rgb(129, 30, 159)">Темно-фиолетовый</button>
+        <button id="33" class="toggle-color active" data-type=free style="background: rgb(43,45,66); color: #fff;" title="Темно-синий / Флот: rgb(43, 45, 66)">Темно-синий / Флот</button> 
+      </div>
+    </div>
+
+    <!-- Color Stats -->
+    <div class="card">
+      <p class="section-title">Статистика цветов</p>
+      <div>
+        <p class="section-title">Колонки</p>
+        <input type="radio" name="color-columns-mode" id="color-columns-dynamic" value="dynamic" checked>
+        <label for="color-columns-dynamic">Динамическое</label>
+        <input type="radio" name="color-columns-mode" id="color-columns-manual" value="manual">
+        <label for="color-columns-manual">Ручной ввод</label>
+        <select style="margin-left: 8px;" id="color-columns-manual-count" aria-label="Color list columns">
+          <option value="1">1</option>
+          <option value="2" selected>2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+      <div id="color-list" class="card span-2"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-content">
+    <small>
+      &copy; Конвертер цветов Wplace —
+      <span id="year"></span>
+    </small>
+  </div>
+</footer>
+
+<script src="toast.js"></script>
+<script src="main.js"></script>
+<script>
+  document.getElementById('year')?.appendChild(document.createTextNode(new Date().getFullYear()));
+</script>
+</body>
+</html>

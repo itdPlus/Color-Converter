@@ -1,0 +1,57 @@
+/* ==========================================
+   COLOR VARIABLES
+   Измените эти значения для кастомизации темы
+   ========================================== */
+
+:root {
+  /* Background colors */
+  --bg-primary: #151518;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #2a2a2a;
+  
+  /* Text colors */
+  --text-primary: #f5f5f5;
+  --text-secondary: rgba(255, 255, 255, 0.5);
+  --text-tertiary: rgba(255, 255, 255, 0.3);
+  
+  /* Accent colors */
+  --accent-primary: #0080FF;
+  --accent-secondary: #3b82f6;
+  --accent-hover: #93c5fd;
+  
+  /* Border and divider */
+  --border-color: rgba(255, 255, 255, 0.1);
+  
+  /* Card/Block backgrounds */
+  --block-bg: #222224;
+  --block-bg-secondary: #2a2a2c;
+  --block-hover-bg: #2c2c2f;
+  
+  /* Interactive states */
+  --bg-hover: rgba(255, 255, 255, 0.08);
+  --bg-active: rgba(255, 255, 255, 0.12);
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
+  --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.2);
+  
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 36px;
+  --radius-full: 9999px;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  
+  /* Transitions */
+  --transition: 0.2s ease;
+}
